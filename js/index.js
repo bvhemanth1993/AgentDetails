@@ -146,7 +146,6 @@
 		this.imageSrc = imageSrc;
 		this.setMap(Agentmap);
 		marker_type=type;
-		//console.log(marker_type);
 	}
 
 	agentlocationMarker.prototype = new google.maps.OverlayView();
@@ -155,7 +154,6 @@
 		// Check if the div has been created.	
 		var div = this.div_;
 		if (!div) {
-			//console.log(marker_type);
 			// Create a overlay text DIV
 			div = this.div_ = document.createElement('div');
 			// Create the DIV representing our CustomMarker
@@ -400,7 +398,6 @@
 			var convertingTime=moment(all_markers[i]._location_timestamp).format("dddd, MMMM Do YYYY, h:mm:ss a");
 			
 			var convertingTimeSplit=convertingTime.split(",");
-			console.log(convertingTimeSplit)
 
 			content='<div id="content" class="content" style="color:white;padding:2px 5px;"><small>'
 					+all_markers[i]._marker_type+'</small><br/><small>'
@@ -477,7 +474,6 @@
 				waypoints: waypts,
 				travelMode: 'DRIVING'
 			}, function(response, status) {
-				//console.log(response);
 				if (status === 'OK') {
 					directionsDisplay.setDirections(response);
 					directionsDisplay.setOptions({
@@ -738,7 +734,6 @@
 				if(cords==encodedStr.length-1)
 				{
 					drawPolyline();
-					console.log(keep_direction_services);	
 				}
 			}
 		}
@@ -794,7 +789,6 @@
 			lineCoordinates.push({lat:points[points.length-1].latitude,lan:points[points.length-1].longitude});
 			var var_for_dir_service=var_name++;
 			drawWay(waypoints_from_polylines,var_for_dir_service);
-			//console.log(lineCoordinates);
 		}	
 		function drawPolyline()
 		{
@@ -814,7 +808,6 @@
 					}]
 				];
 				for(var i = 1; i < lineCoordinates.length-1; i++) {
-					//console.log(lineCoordinates[i].lat+","+lineCoordinates[i].lat+"--------- "+lineCoordinates[i+1].lat+" "+lineCoordinates[i+1].lan);	
 					var line = new google.maps.Polyline({
 						path: [
 							new google.maps.LatLng(lineCoordinates[i].lat,lineCoordinates[i].lan), 
@@ -837,13 +830,11 @@
 					location: new google.maps.LatLng(waypoints_from_polylines[i].lat,waypoints_from_polylines[i].lan),
 					stopover: true
 				});
-			}
-			//console.log(waypoints_from_polylines);	
+			}	
 			var gpsdata_length=waypoints_from_polylines.length-1;
 			var twenty_default=20;
 			if(waypoints_from_polylines.length>=2)
 			{	
-				//console.log(waypts.length/20);
 				var divis=waypts.length/20;
 				//var split=divis.split('.');
 				divis++;
@@ -852,12 +843,10 @@
 					var DirectionsRenderer=newVariable++;
 					newVariable_1++;
 					var new_var=DirectionsRenderer+"dirrender";
-					console.log(new_var);
 					new_var=new google.maps.DirectionsRenderer({ suppressMarkers: true });
 					
 					
 					var directionServices1=newVariable_1+"services";
-					console.log(directionServices1)
 					directionServices1=new google.maps.DirectionsService();
 					direction_services_array.push({dis:directionServices1,dirren:new_var});
 					keep_direction_services.push({dis:directionServices1,dirren:new_var});
@@ -869,7 +858,6 @@
 					{	
 						if((i>0)&&(i<20)&&(i!=gpsdata_length))
 						{	
-							//console.log(i+"---i");
 							waypts_20.push({
 								location: new google.maps.LatLng(waypoints_from_polylines[i].lat,waypoints_from_polylines[i].lan),
 								stopover: true
@@ -883,11 +871,6 @@
 						
 						if((i==20)||(i==gpsdata_length))
 						{	
-							//console.log('firststart '+0+" end "+i+" waylength "+waypts_20.length);
-							//for(var j=0;j<waypts_20.length;j++)
-							//{	
-								//console.log(waypoints_from_polylines[j].lat+" "+waypoints_from_polylines[j].lan);
-							//}
 							create_way(direction_services_array[create_way_value].dis,direction_services_array[create_way_value].dirren,waypoints_from_polylines[0].lat,waypoints_from_polylines[0].lan,waypoints_from_polylines[i].lat,waypoints_from_polylines[i].lan,waypts_20);
 							waypts_20=[];
 						}	
@@ -909,7 +892,6 @@
 							));
 							var a=(all_latitudes[all_latitudes.length-1] + all_latitudes[0]) / 2.0;
 							var b=(all_longitudes[all_longitudes.length-1] + all_longitudes[0]) / 2.0;
-							//console.log(a+"----------"+b);
 							Agentmap.fitBounds(new google.maps.LatLngBounds(
 								//bottom left
 								new google.maps.LatLng(all_latitudes[0], +all_longitudes[0]),
@@ -924,7 +906,6 @@
 						
 						if((i>lesser_value+1)&&(i<greater_value)&&(i!=gpsdata_length))
 						{	
-							//console.log(i+"---i");
 							waypts_20.push({
 								location: new google.maps.LatLng(true_entries[i].lat,true_entries[i].lan),
 								stopover: true
@@ -933,7 +914,6 @@
 						if((i==greater_value)||(i==gpsdata_length))
 						{	
 							var a=lesser_value+1;
-							//console.log('start '+a+" end "+i+" waylength "+waypts_20.length);
 							create_way_value++;
 							create_way(direction_services_array[create_way_value].dis,direction_services_array[create_way_value].dirren,true_entries[lesser_value+1].lat,true_entries[lesser_value+1].lan,true_entries[i].lat,true_entries[i].lan,waypts_20);
 							greater_value=greater_value+20;
@@ -988,7 +968,6 @@
 			$('.one').html('');
 			$('.one').removeClass('one');
 
-			console.log(keep_direction_services);	
 			for(var j=0;j<keep_direction_services.length;j++)
 			{
 				var delete_route=keep_direction_services[j].dirren;
@@ -996,7 +975,6 @@
 			}
 			keep_direction_sesrvices=[];//
 			markers=[];// clear all default icons
-			console.log(polylines_array);
 			for (i=0; i<polylines_array.length; i++) 
 			{                           
 			  polylines_array[i].setMap(null); //or line[i].setVisible(false);
@@ -1006,12 +984,6 @@
 			all_latitudes=[];
 			all_longitudes=[];
 			lineCoordinates=[];
-
-			console.log(polylines_array);
-			console.log(markers);
-			console.log(keep_direction_services);
-			console.log(all_latitudes+"---------"+all_longitudes);
-			console.log(lineCoordinates);
 		}
 		function setMapOnAll(Agentmap) 
 		{
