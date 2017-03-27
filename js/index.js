@@ -279,7 +279,7 @@
 	//end stayPointMarker
 	
 	//map declaration
-	Agentmap = new google.maps.Map(document.getElementById("map"), {
+	Agentmap = new google.maps.Map(document.getElementById("MemberDetailsMap"), {
 		zoom: 13,
 		//center: new google.maps.LatLng(12.9716, 77.5946),
 		mapTypeId: google.maps.MapTypeId.DRIVING,
@@ -433,9 +433,9 @@
 
 			    iwBackground.children(':nth-child(4)').css({'display' : 'none'});
 			    iwOuter.parent().parent().css({left: '5px'});
-			    iwBackground.children(':nth-child(1)').attr('style', function(i,s){ return s + 'left: 95px !important;'});
+			    iwBackground.children(':nth-child(1)').attr('style', function(i,s){ return s + 'left: 99px !important;'});
 
-			    iwBackground.children(':nth-child(3)').attr('style', function(i,s){ return s + 'left: 95px !important;'});
+			    iwBackground.children(':nth-child(3)').attr('style', function(i,s){ return s + 'left: 99px !important;'});
 			    iwBackground.children(':nth-child(3)').find('div').children().css({'box-shadow': 'rgba(72, 181, 233, 0.6) 0px 1px 6px', 'z-index' : '99','background-color':'black'});
 			    var iwCloseBtn = iwOuter.next();
 			    iwCloseBtn.css({opacity: '1', right: '38px', display:'none',top: '3px', border: '7px solid #48b5e9', 'border-radius': '13px', 'box-shadow': '0 0 5px #3990B9'});
@@ -643,12 +643,10 @@
 			}, function(start, end, label) {
 				var pass=start;
 				moment(pass);
-			  	//console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
-				//console.log("New date range selected: " + start.format('YYYY-MM-DD') + " to " + end.format('YYYY-MM-DD') + " (predefined range: " + label + ")");
-				$('#changeDate').html(start.format('YYYY-MM-DD'));
+			  	
+			  	$('#changeDate').html(start.format('YYYY-MM-DD'));
 				$('#changeDate').val(start.format('YYYY-MM-DD'));
 				$(button_next).attr('disabled',false);
-				console.log(markers);
 			});
 			//dark view button activity
 			var i=0;
@@ -897,22 +895,14 @@
 						{
 							
 							var bounds = new google.maps.LatLngBounds();
-							//console.log(markers.length);
 							for (var i = 0; i < markers.length; i++) {
-								//console.log(markers.length);
-								//bounds.extend(markers[i].getPosition());
 								bounds.extend(markers[i].position);
-								//console.log(markers[i])
 							}
 							Agentmap.fitBounds(bounds);
-							//console.log(all_longitudes);	
 							
 							all_longitudes.sort(sortFloat);
 							all_latitudes.sort(sortFloat);
-							//console.log(all_longitudes);
-							//console.log(all_latitudes);
-							//console.log(all_latitudes[0]+"-----min lat long "+all_longitudes[0]);
-							//console.log(all_latitudes[all_latitudes.length-1]+"-----min lat long "+all_longitudes[all_longitudes.length-1]);
+							
 							Agentmap.setCenter(new google.maps.LatLng(
 							  ((all_latitudes[all_latitudes.length-1] + all_latitudes[0]) / 2.0),
 							  ((all_longitudes[all_longitudes.length-1] + all_longitudes[0]) / 2.0)
@@ -979,14 +969,9 @@
 			waypoints_from_polylines=[];
 			direction_services_array=[];
 		}
-		$(document).ready(function(){
-			initialize();
-			$('#clear').on('click',function(){
 
-				console.log(markers.length);
-			});
-		});
-		function remove()
+
+		function removeAll()
 		{
 			
 			deleteMarkers();
@@ -999,6 +984,9 @@
 			//stayPointMarker
 			$('.stayPointMarker').html('');
 			$('.stayPointMarker').removeClass('stayPointMarker');
+
+			$('.one').html('');
+			$('.one').removeClass('one');
 
 			console.log(keep_direction_services);	
 			for(var j=0;j<keep_direction_services.length;j++)
@@ -1013,12 +1001,24 @@
 			{                           
 			  polylines_array[i].setMap(null); //or line[i].setVisible(false);
 			}
+			polylines_array=[];
+
+			all_latitudes=[];
+			all_longitudes=[];
+			lineCoordinates=[];
+
+			console.log(polylines_array);
+			console.log(markers);
+			console.log(keep_direction_services);
+			console.log(all_latitudes+"---------"+all_longitudes);
+			console.log(lineCoordinates);
 		}
 		function setMapOnAll(Agentmap) 
 		{
 			if(markers.length>=1)
 			{
-				for (var i = 0; i < markers.length; i++) {
+				for (var i = 0; i < markers.length; i++) 
+				{
 					markers[i].setMap(Agentmap);
 				}
 			}	
@@ -1034,3 +1034,7 @@
     	}
 		  		
 		window.onload=place_all_things();
+
+		$(document).ready(function(){
+			initialize();
+		});
